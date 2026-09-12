@@ -1,0 +1,37 @@
+{
+  "name": "testpilot-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CLI that wraps a CI test command and streams its Allure results into a Testpilot TMS launch as it runs.",
+  "type": "module",
+  "bin": {
+    "testpilot": "dist/index.js",
+    "testspot": "dist/testspot.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "bundle": "node bundle.mjs",
+    "build:executables": "node build-executables.mjs",
+    "export:github": "node export-github.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  }
+}

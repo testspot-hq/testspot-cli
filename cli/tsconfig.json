@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
+    // NodeNext, not the "Bundler" the server package uses — same reasoning as mcp/tsconfig.json: this
+    // output is run by `node dist/index.js` (via the `testpilot` bin) with no bundler in the path, so
+    // Node's ESM loader needs explicit file extensions. Relative imports here carry a `.js` suffix.
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

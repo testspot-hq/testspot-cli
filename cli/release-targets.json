@@ -1,0 +1,10 @@
+{
+  "bunVersion": "1.4.2",
+  "targets": {
+    "linux_amd64": { "target": "bun-linux-x64", "file": "testspot_linux_amd64" },
+    "linux_arm64": { "target": "bun-linux-arm64", "file": "testspot_linux_arm64" },
+    "darwin_amd64": { "target": "bun-darwin-x64", "file": "testspot_darwin_amd64" },
+    "darwin_arm64": { "target": "bun-darwin-arm64", "file": "testspot_darwin_arm64" },
+    "windows_amd64": { "target": "bun-windows-x64", "file": "testspot_windows_amd64.exe" }
+  }
+}

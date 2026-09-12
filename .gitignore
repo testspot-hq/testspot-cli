@@ -1,0 +1,6 @@
+**/node_modules/
+**/dist/
+cli/testspot.mjs
+cli/testpilot.mjs
+.env
+.env.*
