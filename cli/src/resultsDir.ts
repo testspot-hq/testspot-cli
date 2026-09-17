@@ -5,7 +5,8 @@
  * No `fs.watch` anywhere here — see the module doc in `watcher.ts` for why a poll loop is used instead.
  */
 
-import { readFile, readdir, stat } from 'node:fs/promises'
+import { readFile, readdir, stat, lstat, realpath, open } from 'node:fs/promises'
+import { constants } from 'node:fs'
 import path from 'node:path'
 
 export interface FileSnapshot {
@@ -50,7 +51,20 @@ export async function readJsonFile(file: string): Promise<unknown | null> {
 export async function readEnvironmentProperties(dir: string): Promise<Array<{ key: string; value: string }>> {
   let text: string
   try {
-    text = await readFile(path.join(dir, 'environment.properties'), 'utf8')
+    const file = path.join(await realpath(dir), 'environment.properties')
+    const expected = await lstat(file)
+    // Optional report metadata must not turn a supplied symlink into a read of the runner's .env.
+    if (!expected.isFile()) return []
+    const handle = await open(file, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0))
+    try {
+      // Read the checked descriptor, not the path again. This also refuses replacements on platforms
+      // without O_NOFOLLOW; O_NONBLOCK keeps a concurrent replacement with a FIFO from hanging CI.
+      const actual = await handle.stat()
+      if (!actual.isFile() || actual.dev !== expected.dev || actual.ino !== expected.ino) return []
+      text = await handle.readFile('utf8')
+    } finally {
+      await handle.close()
+    }
   } catch {
     return []
   }
